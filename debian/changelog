@@ -1,3 +1,44 @@
+libxkbcommon (0.8.0-1ubuntu0.1) bionic-security; urgency=medium
+
+  * SECURITY UPDATE: Denial of service
+    - debian/patches/CVE-2018-15853.patch: fix in src/xkbcomp/expr.c.
+    - CVE-2018-15853
+  * SECURITY UPDATE: Denial of service
+    - debian/patches/CVE-2018-15854.patch: fix in
+      src/xkbcomp/ast-build.c, src/xkbcomp/ast-build.h,
+      src/xkbcomp/ast.h, src/xkbcomp/parser.y.
+    - CVE-2018-15854
+  * SECURITY UPDATE: Denial of service
+    - debian/patches/CVE-2018-15855.patch: fix in
+      src/xkbcomp/keymap.c, src/xkbcomp/parser.y.
+    - CVE-2018-15855
+  * SECURITY UPDATE: Denial of service
+    - debian/patches/CVE-2018-15856.patch: fix in src/compose/parser.c.
+    - CVE-2018-15856
+  * SECURITY UPDATE: Denial of service
+    - debian/patches/CVE-2018-15857.patch: fix in src/xkbcomp/ast-build.c.
+    - CVE-2018-15857
+  * SECURITY UPDATE: Denial of service
+    - debian/patches/CVE-2018-15858.patch: fix in src/xkbcomp/keycodes.c.
+    - CVE-2018-15858
+  * SECURITY UPDATE: Denial of service
+    - debian/patches/CVE-2018-15859.patch: fix in src/xkbcomp/expr.c.
+    - CVE-2018-15859
+  * SECURITY UPDATE: Denial of service
+    - debian/patches/CVE-2018-15861.patch: fix in src/xkbcomp/expr.c.
+    - CVE-2018-15861
+  * SECURITY UPDATE: Denial of service
+    - debian/patches/CVE-2018-15862.patch: fix in src/xkbcomp/expr.c.
+    - CVE-2018-15862
+  * SECURITY UPDATE: Denial of service
+    - debian/patches/CVE-2018-15863.patch: fix in src/xkbcomp/compat.c.
+    - CVE-2018-15863
+  * SECURITY UPDATE: Denial of service
+    - debian/patches/CVE-2018-15864.patch: fix in src/xkbcomp/parser.y.
+    - CVE-2018-15864
+
+ -- Leonidas S. Barbosa <leo.barbosa@canonical.com>  Tue, 06 Nov 2018 08:36:17 -0300
+
 libxkbcommon (0.8.0-1) unstable; urgency=medium
 
   * New upstream release. (LP: #1740894)
