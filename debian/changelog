@@ -1,3 +1,30 @@
+libxkbcommon (0.8.2-1~ubuntu18.04.1) bionic; urgency=medium
+
+  * Backport to bionic
+    - sync with upstream, drop CVE patches
+    - sync packaging, mark -dev packages M-A: same (LP: #1772512)
+
+ -- Timo Aaltonen <tjaalton@debian.org>  Tue, 05 Mar 2019 16:36:07 +0200
+
+libxkbcommon (0.8.2-1) unstable; urgency=medium
+
+  * New upstream release (Closes: #907302).
+    - Fixes CVE-2018-15853 CVE-2018-15854 CVE-2018-15855 CVE-2018-15856
+      CVE-2018-15857 CVE-2018-15858 CVE-2018-15859 CVE-2018-15861
+      CVE-2018-15862 CVE-2018-15863 CVE-2018-15864.
+  * control: Update vcs urls.
+  * control: Priority optional for all packages.
+
+ -- Timo Aaltonen <tjaalton@debian.org>  Thu, 30 Aug 2018 14:06:12 +0300
+
+libxkbcommon (0.8.0-2) unstable; urgency=medium
+
+  * control: Mark -dev packages M-A: same. (LP: #1772512)
+  * Split documentation from -dev to -doc. (Closes: #893855)
+  * rules: Purge doxygen .md5 files.
+
+ -- Timo Aaltonen <tjaalton@debian.org>  Thu, 24 May 2018 16:59:28 +0300
+
 libxkbcommon (0.8.0-1ubuntu0.1) bionic-security; urgency=medium
 
   * SECURITY UPDATE: Denial of service

@@ -7,4 +7,3 @@ usr/include/xkbcommon/xkbcommon-names.h
 usr/lib/*/libxkbcommon.a
 usr/lib/*/libxkbcommon.so
 usr/lib/*/pkgconfig/xkbcommon.pc
-usr/share/doc/libxkbcommon/* usr/share/doc/libxkbcommon-dev/

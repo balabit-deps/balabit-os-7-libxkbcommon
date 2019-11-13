@@ -8,6 +8,7 @@ override_dh_auto_configure:
 # Kill *.la files, and forget no-one:
 override_dh_install:
 	find debian/tmp -name '*.la' -delete
+	find debian/tmp -name '*.md5' -delete
 	dh_install --fail-missing
 
 override_dh_makeshlibs:

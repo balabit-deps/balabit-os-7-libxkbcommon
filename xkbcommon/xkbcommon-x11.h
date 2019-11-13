@@ -64,10 +64,9 @@ extern "C" {
  *
  * The XKB extension supports using separate keymaps and states for
  * different keyboard devices.  The devices are identified by an integer
- * device ID and are managed by another X11 extension, XInput (or its
- * successor, XInput2).  The original X11 protocol only had one keyboard
- * device, called the "core keyboard", which is still supported as a
- * "virtual device".
+ * device ID and are managed by another X11 extension, XInput. The
+ * original X11 protocol only had one keyboard device, called the "core
+ * keyboard", which is still supported as a "virtual device".
  *
  * 3. We will use the core keyboard as an example.  To get its device ID,
  *    use either the xcb_xkb_get_device_info() request directly, or the
@@ -79,7 +78,7 @@ extern "C" {
  *
  * @note At this point, you may consider setting various XKB controls and
  * XKB per-client flags.  For example, enabling detectable autorepeat: \n
- * http://www.x.org/releases/current/doc/kbproto/xkbproto.html#Detectable_Autorepeat
+ * https://www.x.org/releases/current/doc/kbproto/xkbproto.html#Detectable_Autorepeat
  *
  * Next, you need to react to state changes (e.g. a modifier was pressed,
  * the layout was changed) and to keymap changes (e.g. a tool like xkbcomp,
@@ -96,7 +95,7 @@ extern "C" {
  * @note It is also possible to use the KeyPress/KeyRelease @p state
  * field to find the effective modifier and layout state, instead of
  * using XkbStateNotify: \n
- * http://www.x.org/releases/current/doc/kbproto/xkbproto.html#Computing_A_State_Field_from_an_XKB_State
+ * https://www.x.org/releases/current/doc/kbproto/xkbproto.html#Computing_A_State_Field_from_an_XKB_State
  * \n However, XkbStateNotify is more accurate.
  *
  * @note There is no need to call xkb_state_update_key(); the state is
@@ -197,8 +196,9 @@ xkb_x11_get_core_keyboard_device_id(xcb_connection_t *connection);
  * @param connection
  *     An XCB connection to the X server.
  * @param device_id
- *     An XInput 1 device ID (in the range 0-255) with input class KEY.
- *     Passing values outside of this range is an error.
+ *     An XInput device ID (in the range 0-127) with input class KEY.
+ *     Passing values outside of this range is an error (the XKB protocol
+ *     predates the XInput2 protocol, which first allowed IDs > 127).
  * @param flags
  *     Optional flags for the keymap, or 0.
  *

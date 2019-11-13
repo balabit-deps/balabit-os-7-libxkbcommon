@@ -1,8 +1,7 @@
 Source: libxkbcommon
 Section: x11
 Priority: optional
-Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
-XSBC-Original-Maintainer: Debian X Strike Force <debian-x@lists.debian.org>
+Maintainer: Debian X Strike Force <debian-x@lists.debian.org>
 Uploaders: Michael Stapelberg <stapelberg@debian.org>
 Build-Depends:
  debhelper (>= 10),
@@ -22,8 +21,8 @@ Build-Depends:
  graphviz,
 Standards-Version: 3.9.8
 Homepage: http://www.xkbcommon.org/
-Vcs-Git: https://alioth.debian.org/anonscm/git/pkg-xorg/lib/libxkbcommon.git
-Vcs-Browser: https://anonscm.debian.org/gitweb/?p=pkg-xorg/lib/libxkbcommon.git
+Vcs-Git: https://salsa.debian.org/xorg-team/lib/libxkbcommon.git
+Vcs-Browser: https://salsa.debian.org/xorg-team/lib/libxkbcommon
 
 Package: libxkbcommon0
 Section: libs
@@ -49,7 +48,7 @@ Description: library interface to the XKB compiler - shared library
 Package: libxkbcommon-dev
 Section: libdevel
 Architecture: any
-Priority: extra
+Multi-Arch: same
 Depends:
  libxkbcommon0 (= ${binary:Version}),
  ${shlibs:Depends},
@@ -61,6 +60,26 @@ Description: library interface to the XKB compiler - development files
  includes Wayland, kmscon, GTK+, Clutter, and more.
  .
  This package contains the development headers for the library found in
+ libxkbcommon0. Non-developers likely have little use for this package.
+ .
+ More information about X.Org can be found at:
+ <URL:http://www.X.org>
+ .
+ This module can be found at
+ https://github.com/xkbcommon/libxkbcommon.git
+
+Package: libxkbcommon-doc
+Section: doc
+Architecture: all
+Multi-Arch: foreign
+Depends: ${misc:Depends},
+Description: library interface to the XKB compiler - documentation
+ xkbcommon is a library to handle keyboard descriptions, including loading them
+ from disk, parsing them and handling their state. It's mainly meant for client
+ toolkits, window systems, and other system applications; currently that
+ includes Wayland, kmscon, GTK+, Clutter, and more.
+ .
+ This package contains the documentation files for the library found in
  libxkbcommon0. Non-developers likely have little use for this package.
  .
  More information about X.Org can be found at:
@@ -91,7 +110,7 @@ Description: library to create keymaps with the XKB X11 protocol
 Package: libxkbcommon-x11-dev
 Section: libdevel
 Architecture: any
-Priority: extra
+Multi-Arch: same
 Pre-Depends: ${misc:Pre-Depends}
 Depends:
  libxkbcommon-x11-0 (= ${binary:Version}),

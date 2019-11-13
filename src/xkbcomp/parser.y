@@ -239,9 +239,9 @@ resolve_keysym(const char *name, xkb_keysym_t *sym_rtrn)
  */
 
 XkbFile         :       XkbCompositeMap
-                        { $$ = param->rtrn = $1; param->more_maps = true; }
+                        { $$ = param->rtrn = $1; param->more_maps = !!param->rtrn; }
                 |       XkbMapConfig
-                        { $$ = param->rtrn = $1; param->more_maps = true; YYACCEPT; }
+                        { $$ = param->rtrn = $1; param->more_maps = !!param->rtrn; YYACCEPT; }
                 |       END_OF_FILE
                         { $$ = param->rtrn = NULL; param->more_maps = false; }
                 ;
@@ -273,14 +273,7 @@ XkbMapConfig    :       OptFlags FileType OptMapName OBRACE
                             DeclList
                         CBRACE SEMI
                         {
-                            if ($2 == FILE_TYPE_GEOMETRY) {
-                                free($3);
-                                FreeStmt($5);
-                                $$ = NULL;
-                            }
-                            else {
-                                $$ = XkbFileCreate($2, $3, $5, $1);
-                            }
+                            $$ = XkbFileCreate($2, $3, $5, $1);
                         }
                 ;
 
@@ -591,13 +584,13 @@ Element         :       ACTION_TOK
                 |       INDICATOR
                         { $$ = xkb_atom_intern_literal(param->ctx, "indicator"); }
                 |       SHAPE
-                        { $$ = XKB_ATOM_NONE; }
+                        { $$ = xkb_atom_intern_literal(param->ctx, "shape"); }
                 |       ROW
-                        { $$ = XKB_ATOM_NONE; }
+                        { $$ = xkb_atom_intern_literal(param->ctx, "row"); }
                 |       SECTION
-                        { $$ = XKB_ATOM_NONE; }
+                        { $$ = xkb_atom_intern_literal(param->ctx, "section"); }
                 |       TEXT
-                        { $$ = XKB_ATOM_NONE; }
+                        { $$ = xkb_atom_intern_literal(param->ctx, "text"); }
                 ;
 
 OptMergeMode    :       MergeMode       { $$ = $1; }
@@ -687,7 +680,7 @@ Terminal        :       String
                 |       Integer
                         { $$ = ExprCreateInteger($1); }
                 |       Float
-                        { $$ = NULL; }
+                        { $$ = ExprCreateFloat(/* Discard $1 */); }
                 |       KEYNAME
                         { $$ = ExprCreateKeyName($1); }
                 ;
@@ -779,6 +772,7 @@ parse(struct xkb_context *ctx, struct scanner *scanner, const char *map)
         .scanner = scanner,
         .ctx = ctx,
         .rtrn = NULL,
+        .more_maps = false,
     };
 
     /*

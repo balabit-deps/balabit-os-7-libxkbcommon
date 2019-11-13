@@ -1,7 +1,7 @@
 project(
     'libxkbcommon',
     'c',
-    version: '0.8.0',
+    version: '0.8.2',
     default_options: [
         'c_std=c99',
         'warning_level=2',
@@ -106,7 +106,7 @@ add_project_arguments('-include', 'config.h', language: 'c')
 # Supports -Wl,--version-script?
 have_version_script = cc.links(
     'int main(){}',
-    link_args: '-Wl,--version-script=' + join_paths(meson.source_root(), 'xkbcommon.map'),
+    args: '-Wl,--version-script=' + join_paths(meson.source_root(), 'xkbcommon.map'),
     name: '-Wl,--version-script',
 )
 
@@ -258,6 +258,8 @@ You can disable X11 support with -Denable-x11=false.''')
         libraries: libxkbcommon_x11,
         version: meson.project_version(),
         description: 'XKB API common to servers and clients - X11 support',
+        requires: ['xkbcommon'],
+        requires_private: ['xcb>=1.10', 'xcb-xkb>=1.10'],
     )
 endif
 
@@ -284,6 +286,16 @@ test_dep = declare_dependency(
     include_directories: include_directories('src'),
     link_with: libxkbcommon_test_internal,
 )
+if get_option('enable-x11')
+    x11_test_dep = declare_dependency(
+        link_with: libxkbcommon_x11_internal,
+        dependencies: [
+            test_dep,
+            xcb_dep,
+            xcb_xkb_dep,
+        ],
+    )
+endif
 test(
     'keysym',
     executable('test-keysym', 'test/keysym.c', dependencies: test_dep),
@@ -362,13 +374,18 @@ test(
 if get_option('enable-x11')
     test(
         'x11',
-        executable('test-x11', 'test/x11.c', dependencies: test_dep, link_with: libxkbcommon_x11_internal),
+        executable('test-x11', 'test/x11.c', dependencies: x11_test_dep),
         env: test_env,
     )
     # test/x11comp is meant to be run, but it is (temporarily?) disabled.
     # See: https://github.com/xkbcommon/libxkbcommon/issues/30
-    executable('test-x11comp', 'test/x11comp.c', dependencies: test_dep, link_with: libxkbcommon_x11_internal)
+    executable('test-x11comp', 'test/x11comp.c', dependencies: x11_test_dep)
 endif
+
+
+# Fuzzing target programs.
+executable('fuzz-keymap', 'fuzz/keymap/target.c', dependencies: test_dep)
+executable('fuzz-compose', 'fuzz/compose/target.c', dependencies: test_dep)
 
 
 # Demo programs.
@@ -378,7 +395,7 @@ if cc.has_header('linux/input.h')
     executable('interactive-evdev', 'test/interactive-evdev.c', dependencies: test_dep)
 endif
 if get_option('enable-x11')
-    executable('interactive-x11', 'test/interactive-x11.c', dependencies: test_dep, link_with: libxkbcommon_x11_internal)
+    executable('interactive-x11', 'test/interactive-x11.c', dependencies: x11_test_dep)
 endif
 if get_option('enable-wayland')
     wayland_client_dep = dependency('wayland-client', version: '>=1.2.0', required: false)
@@ -411,13 +428,10 @@ endif
 
 
 # Benchmarks.
-# For clock_gettime, on some systems.
-rt_dep = cc.find_library('rt', required: false)
 libxkbcommon_bench_internal = static_library(
     'xkbcommon-bench-internal',
     'bench/bench.c',
     'bench/bench.h',
-    dependencies: rt_dep,
     link_with: libxkbcommon_test_internal,
 )
 bench_dep = declare_dependency(
