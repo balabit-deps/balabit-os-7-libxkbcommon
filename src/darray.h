@@ -23,7 +23,7 @@
 #ifndef CCAN_DARRAY_H
 #define CCAN_DARRAY_H
 
-/* Originally taken from: http://ccodearchive.net/info/darray.html
+/* Originally taken from: https://ccodearchive.net/info/darray.html
  * But modified for libxkbcommon. */
 
 #include <stdlib.h>
@@ -104,7 +104,8 @@ typedef darray (unsigned long)  darray_ulong;
 #define darray_from_items(arr, items, count) do { \
     unsigned __count = (count); \
     darray_resize(arr, __count); \
-    memcpy((arr).item, items, __count * sizeof(*(arr).item)); \
+    if (count != 0) \
+        memcpy((arr).item, items, __count * sizeof(*(arr).item)); \
 } while (0)
 
 #define darray_copy(arr_to, arr_from) \

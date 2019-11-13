@@ -21,10 +21,10 @@ dnl
 dnl Process this file with autoconf to create configure.
 
 # Initialize Autoconf
-AC_PREREQ([2.62])
-AC_INIT([libxkbcommon], [0.8.0],
+AC_PREREQ([2.63])
+AC_INIT([libxkbcommon], [0.8.2],
         [https://bugs.freedesktop.org/enter_bug.cgi?product=libxkbcommon],
-        [libxkbcommon], [http://xkbcommon.org])
+        [libxkbcommon], [https://xkbcommon.org])
 AC_CONFIG_SRCDIR([Makefile.am])
 AC_CONFIG_HEADERS([src/config.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -99,12 +99,6 @@ AM_CONDITIONAL([HAVE_NO_UNDEFINED], [test "x$have_no_undefined" = xyes])
 
 XORG_CHECK_LINKER_FLAGS([-Wl,--version-script="$srcdir/xkbcommon.map"], [have_version_script=yes])
 AM_CONDITIONAL([HAVE_VERSION_SCRIPT], [test "x$have_version_script" = xyes])
-
-AC_CHECK_LIB(rt, clock_gettime,
-    [AC_SUBST(RT_LIBS, "-lrt")],
-    [AC_SUBST(RT_LIBS, "")],
-    [-lrt])
-AC_CHECK_FUNCS([clock_gettime])
 
 # Define a configuration option for the XKB config root
 xkb_base=`$PKG_CONFIG --variable=xkb_base xkeyboard-config`

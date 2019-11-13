@@ -42,16 +42,20 @@ ExprResolveLhs(struct xkb_context *ctx, const ExprDef *expr,
         *elem_rtrn = NULL;
         *field_rtrn = xkb_atom_text(ctx, expr->ident.ident);
         *index_rtrn = NULL;
-        return true;
+        return (*field_rtrn != NULL);
     case EXPR_FIELD_REF:
         *elem_rtrn = xkb_atom_text(ctx, expr->field_ref.element);
         *field_rtrn = xkb_atom_text(ctx, expr->field_ref.field);
         *index_rtrn = NULL;
-        return true;
+        return (*elem_rtrn != NULL && *field_rtrn != NULL);
     case EXPR_ARRAY_REF:
         *elem_rtrn = xkb_atom_text(ctx, expr->array_ref.element);
         *field_rtrn = xkb_atom_text(ctx, expr->array_ref.field);
         *index_rtrn = expr->array_ref.entry;
+	if (expr->array_ref.element != XKB_ATOM_NONE && *elem_rtrn == NULL)
+		return false;
+	if (*field_rtrn == NULL)
+		return false;
         return true;
     default:
         break;
@@ -101,6 +105,8 @@ LookupModMask(struct xkb_context *ctx, const void *priv, xkb_atom_t field,
         return false;
 
     str = xkb_atom_text(ctx, field);
+    if (!str)
+        return false;
 
     if (istreq(str, "all")) {
         *val_rtrn  = MOD_REAL_MASK_ALL;
@@ -165,7 +171,7 @@ ExprResolveBoolean(struct xkb_context *ctx, const ExprDef *expr,
 
     case EXPR_INVERT:
     case EXPR_NOT:
-        ok = ExprResolveBoolean(ctx, expr, set_rtrn);
+        ok = ExprResolveBoolean(ctx, expr->unary.child, set_rtrn);
         if (ok)
             *set_rtrn = !*set_rtrn;
         return ok;

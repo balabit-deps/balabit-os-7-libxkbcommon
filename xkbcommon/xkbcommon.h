@@ -177,7 +177,7 @@ typedef uint32_t xkb_keycode_t;
  * somewhat more general, in that they can also represent some "function",
  * such as "Left" or "Right" for the arrow keys.  For more information,
  * see:
- * http://www.x.org/releases/X11R7.7/doc/xproto/x11protocol.html#keysym_encoding
+ * https://www.x.org/releases/current/doc/xproto/x11protocol.html#keysym_encoding
  *
  * Specifically named keysyms can be found in the
  * xkbcommon/xkbcommon-keysyms.h header file.  Their name does not include
@@ -385,7 +385,7 @@ struct xkb_rule_names {
  *   Similarly, the UTF-8/UTF-32 string produced is capitalized.
  *
  *   This is described in:
- *   http://www.x.org/releases/current/doc/kbproto/xkbproto.html#Interpreting_the_Lock_Modifier
+ *   https://www.x.org/releases/current/doc/kbproto/xkbproto.html#Interpreting_the_Lock_Modifier
  *
  * - Control transformation.  If the Control modifier is active and
  *   was not consumed by the translation process, the string produced
@@ -393,7 +393,7 @@ struct xkb_rule_names {
  *   applicable).  Keysyms are not affected.
  *
  *   This is described in:
- *   http://www.x.org/releases/current/doc/kbproto/xkbproto.html#Interpreting_the_Control_Modifier
+ *   https://www.x.org/releases/current/doc/kbproto/xkbproto.html#Interpreting_the_Control_Modifier
  *
  * Each relevant function discusses which transformations it performs.
  *
@@ -1703,7 +1703,7 @@ enum xkb_consumed_mode {
     /**
      * This is the mode defined in the XKB specification and used by libX11.
      *
-     * A modifier is consumed iff it *may affect* key translation.
+     * A modifier is consumed if and only if it *may affect* key translation.
      *
      * For example, if `Control+Alt+<Backspace>` produces some assigned keysym,
      * then when pressing just `<Backspace>`, `Control` and `Alt` are consumed,
@@ -1714,16 +1714,17 @@ enum xkb_consumed_mode {
     /**
      * This is the mode used by the GTK+ toolkit.
      *
-     * The mode consists of the following two heuristics:
+     * The mode consists of the following two independent heuristics:
      *
-     * - The active set of modifiers, excluding modifiers which do not affect
-     *   the key (as described above), are considered consumed, if they result
-     *   in different keysyms being produced than when no modifiers are active.
-     *
-     * - Additionally, a single modifier is considered consumed if, were it the
-     *   only active modifier affecting the key (as described above), it would
-     *   result in different keysyms being produced than when no modifiers are
+     * - The currently active set of modifiers, excluding modifiers which do
+     *   not affect the key (as described for @ref XKB_CONSUMED_MODE_XKB), are
+     *   considered consumed, if the keysyms produced when all of them are
+     *   active are different from the keysyms produced when no modifiers are
      *   active.
+     *
+     * - A single modifier is considered consumed if the keysyms produced for
+     *   the key when it is the only active modifier are different from the
+     *   keysyms produced when no modifiers are active.
      */
     XKB_CONSUMED_MODE_GTK
 };
